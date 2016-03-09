@@ -1,3 +1,24 @@
 body {
 	background: #eee;
 }
+
+.list {
+	display: inline-block;
+	width: 200px;
+	vertical-align: top;
+}
+
+.note {
+	display: inline-block;
+	vertical-align: top;
+	&-header {
+		font-size: 30px;
+		font-weight: 800;
+		margin: 20px 0;
+		background: #fff;
+	}
+	&-body {
+		font-size: 20px;
+		background: #fff;
+	}
+}
