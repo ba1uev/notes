@@ -1,14 +1,16 @@
 N = window.N || {};
 N.editor = (function(){
 	
-	var header, body, yas = 0;
+	var header, body, curr_id = 1;
 	
 	function init(){
 		bindElements();
-		if (N.utils.supportHTMLStorage()) {
-			loadState();
-		}
 		bindEvents();
+		if (N.utils.supportHTMLStorage()) {
+			localStorage.curr_id = curr_id;
+			loadState();
+			localStorage.active = true;
+		}
 	}
 	
 	function bindElements(){
@@ -19,29 +21,40 @@ N.editor = (function(){
 	function bindEvents(){
 		if (N.utils.supportHTMLStorage()) {
 			document.onkeyup = function() {
-				saveState();
+				saveState(curr_id);
 			}
 		}
 	}
 	
 	function loadState(){
-		if (localStorage['n_header']) {
-			header.innerHTML = localStorage.n_header;
-			body.innerHTML = localStorage.n_body;
-			console.log('note loaded');
+		if (localStorage['active']) {
+			curr_id = localStorage.curr_id;
+			header.innerHTML = localStorage['h_' + curr_id];
+			body.innerHTML = localStorage['b_' + curr_id];
+			console.log('note #'+curr_id+' loaded');
 		}
 	}
 	
-	function saveState(){
-		console.log(yas++);
-		localStorage.n_header = header.innerHTML;
-		localStorage.n_body = body.innerHTML;
+	function saveState(id){
+		localStorage['h_'+id] = header.innerHTML;
+		localStorage['b_'+id] = body.innerHTML;
+	}
+	
+	function currId(id){
+		if (id) {
+			localStorage.curr_id = curr_id = id;
+			return curr_id;
+		} else {
+			return curr_id;
+		}
 	}
 	
 	// =============================================
 	
 	return {
-		init: init
+		init: init,
+		currId: currId,
+		loadState: loadState
 	}
 	
 })();

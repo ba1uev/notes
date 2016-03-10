@@ -8,7 +8,10 @@
 	</head>
 	<body>
 		<div class="list">
-			<div class="list-item">Союз-11</div>
+			<div class="list-items">
+				<a data-id="1" href="#1">Союз-11</a>
+			</div>
+			<br>
 			<button class="list-create">Новый пост</button>
 		</div>
 		<div class="note">
@@ -21,6 +24,8 @@
 		<script src="js/build/prod.min.js"></script>
 		<script>
 			N.editor.init();
+			N.list.init();
+			N.router.init();
 		</script>
 	</body>
 </html>

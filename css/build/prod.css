@@ -8,14 +8,17 @@ body {
   vertical-align: top;
   margin: 20px 20px 0 20px;
 }
-.list-item {
+.list-items a {
+  display: block;
+  text-decoration: none;
+  color: #000;
   padding: 4px;
   font-size: 20px;
   background: #fff;
   margin-bottom: 10px;
   cursor: pointer;
 }
-.list-item:hover {
+.list-items a:hover {
   color: orangered;
 }
 .list-create {
