@@ -1,3 +1,5 @@
+$act: orangered;
+
 body {
 	background: #eee;
 }
@@ -6,19 +8,51 @@ body {
 	display: inline-block;
 	width: 200px;
 	vertical-align: top;
+	margin: 20px 20px 0 20px;
+	&-item {
+		padding: 4px;
+		font-size: 20px;
+		background: #fff;
+		margin-bottom: 10px;
+		cursor: pointer;
+		&:hover {
+			color: $act;
+		}
+	}
+	&-create {
+		border: 2px solid $act;
+		background: none;
+		width: 90px;
+		height: 30px;
+		color: $act;
+		font-weight: 600;
+		&:active {
+			background: $act;
+			color: #fff;
+		}
+		&:focus {
+			outline: none;
+		}
+	}
 }
 
 .note {
 	display: inline-block;
 	vertical-align: top;
+	max-width: 500px;
+	&-header, &-body {
+		padding: 10px;
+		background: #fff;
+		&:focus {
+			outline: none;
+		}
+	}
 	&-header {
 		font-size: 30px;
 		font-weight: 800;
 		margin: 20px 0;
-		background: #fff;
 	}
 	&-body {
 		font-size: 20px;
-		background: #fff;
 	}
 }

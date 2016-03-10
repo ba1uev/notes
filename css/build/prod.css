@@ -6,21 +6,53 @@ body {
   display: inline-block;
   width: 200px;
   vertical-align: top;
+  margin: 20px 20px 0 20px;
+}
+.list-item {
+  padding: 4px;
+  font-size: 20px;
+  background: #fff;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.list-item:hover {
+  color: orangered;
+}
+.list-create {
+  border: 2px solid orangered;
+  background: none;
+  width: 90px;
+  height: 30px;
+  color: orangered;
+  font-weight: 600;
+}
+.list-create:active {
+  background: orangered;
+  color: #fff;
+}
+.list-create:focus {
+  outline: none;
 }
 
 .note {
   display: inline-block;
   vertical-align: top;
+  max-width: 500px;
+}
+.note-header, .note-body {
+  padding: 10px;
+  background: #fff;
+}
+.note-header:focus, .note-body:focus {
+  outline: none;
 }
 .note-header {
   font-size: 30px;
   font-weight: 800;
   margin: 20px 0;
-  background: #fff;
 }
 .note-body {
   font-size: 20px;
-  background: #fff;
 }
 
 /*# sourceMappingURL=prod.css.map */

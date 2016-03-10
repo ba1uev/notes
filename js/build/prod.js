@@ -92,7 +92,4 @@ N.utils = (function(){
 		supportHTMLStorage: supportsHtmlStorage
 		
 	}
-	
-	
-	
 })();
