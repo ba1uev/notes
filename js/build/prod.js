@@ -22,6 +22,7 @@ N.editor = (function(){
 		if (N.utils.supportHTMLStorage()) {
 			document.onkeyup = function() {
 				saveState(curr_id);
+				N.list.loadState();
 			}
 		}
 	}
@@ -77,7 +78,13 @@ N.list = (function(){
 	
 	function bindEvents(){
 		newNoteButton.onclick = function(){
-			alert('asdasd');
+			var link = document.createElement('a'),
+				id = Math.max.apply(null, localStorage.all_notes.split(',')) + 1;
+			link.dataset.id = id;
+			link.href = '#'+id;
+			link.innerHTML = 'Новый пост';
+			listItems.appendChild(link);
+			localStorage.all_notes += ',' + id;
 		};
 //		for (var i=0; i<listItemsCount; i++) {
 //			listItems[i].onclick = function(){
@@ -112,8 +119,13 @@ N.list = (function(){
 		}
 	}
 	
+//	function newLink(){
+//		
+//	}
+	
 	return {
-		init: init
+		init: init,
+		loadState: loadState
 	}
 	
 })();
@@ -122,18 +134,22 @@ N.router = (function(){
 	var hash;
 	function init(){
 		if ('onhashchange' in window) {
-			window.onhashchange = function (e) {
-				hash = window.location.hash.substr(1);
-				if (hash &&
-					localStorage.all_notes &&
-					localStorage.all_notes.split(',').indexOf(hash) !== -1) {
-//					console.log('SHOW POST #'+hash);
-					N.editor.currId(hash);
-					N.editor.loadState(hash);
-				} else {
-					window.location.hash = '';
-				}
+			window.onhashchange = function () {
+				loadNote()
 			}
+		}
+		loadNote();
+	}
+	
+	function loadNote(){
+		hash = window.location.hash.substr(1);
+		if (hash &&
+			localStorage.all_notes &&
+			localStorage.all_notes.split(',').indexOf(hash) !== -1) {
+			N.editor.currId(hash);
+			N.editor.init();
+		} else {
+			window.location.hash = '';
 		}
 	}
 	

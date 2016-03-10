@@ -22,6 +22,7 @@ N.editor = (function(){
 		if (N.utils.supportHTMLStorage()) {
 			document.onkeyup = function() {
 				saveState(curr_id);
+				N.list.loadState();
 			}
 		}
 	}

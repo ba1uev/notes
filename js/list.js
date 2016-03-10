@@ -17,7 +17,13 @@ N.list = (function(){
 	
 	function bindEvents(){
 		newNoteButton.onclick = function(){
-			alert('asdasd');
+			var link = document.createElement('a'),
+				id = Math.max.apply(null, localStorage.all_notes.split(',')) + 1;
+			link.dataset.id = id;
+			link.href = '#'+id;
+			link.innerHTML = 'Новый пост';
+			listItems.appendChild(link);
+			localStorage.all_notes += ',' + id;
 		};
 //		for (var i=0; i<listItemsCount; i++) {
 //			listItems[i].onclick = function(){
@@ -52,8 +58,13 @@ N.list = (function(){
 		}
 	}
 	
+//	function newLink(){
+//		
+//	}
+	
 	return {
-		init: init
+		init: init,
+		loadState: loadState
 	}
 	
 })();
