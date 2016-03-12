@@ -2,6 +2,7 @@ $act: orangered;
 
 body {
 	background: #eee;
+	font-family: helvetica;
 }
 
 .list {
@@ -19,8 +20,20 @@ body {
 			background: #fff;
 			margin-bottom: 10px;
 			cursor: pointer;
+			position: relative;
 			&:hover {
 				color: $act;
+			}
+			div {
+				position: absolute;
+				top: 7px;
+				right: -15px;
+//				font-weight: 800;
+				font-size: 14px;
+				width: 16px;
+				height: 16px;
+				text-align: center;
+				line-height: 16px;
 			}
 		}
 	}

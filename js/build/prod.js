@@ -3,13 +3,18 @@ N.editor = (function(){
 	
 	var header, body, curr_id = 1;
 	
+	// при ините едитора сразу запихать первичный текст в ЛС
+	// в листе тоже захуярить в лист-итеме первичный тайтл
 	function init(){
 		bindElements();
 		bindEvents();
 		if (N.utils.supportHTMLStorage()) {
 			localStorage.curr_id = curr_id;
 			loadState();
-			localStorage.active = true;
+//			if (!localStorage['active']) {
+//				console.log('надо сохранить')
+//				saveState(1);
+//			}
 		}
 	}
 	
@@ -39,6 +44,7 @@ N.editor = (function(){
 	function saveState(id){
 		localStorage['h_'+id] = header.innerHTML;
 		localStorage['b_'+id] = body.innerHTML;
+		console.log('saved');
 	}
 	
 	function currId(id){
@@ -68,6 +74,10 @@ N.list = (function(){
 		bindElements();
 		bindEvents();
 		loadState();
+		if (!localStorage['active']) {
+			localStorage.all_notes = '1';
+			localStorage.active = true;
+		}
 	}
 	
 	function bindElements(){
@@ -80,10 +90,7 @@ N.list = (function(){
 		newNoteButton.onclick = function(){
 			var link = document.createElement('a'),
 				id = Math.max.apply(null, localStorage.all_notes.split(',')) + 1;
-			link.dataset.id = id;
-			link.href = '#'+id;
-			link.innerHTML = 'Новый пост';
-			listItems.appendChild(link);
+			listItems.appendChild(makeLink(id, 'New note'));
 			localStorage.all_notes += ',' + id;
 		};
 //		for (var i=0; i<listItemsCount; i++) {
@@ -119,9 +126,23 @@ N.list = (function(){
 		}
 	}
 	
-//	function newLink(){
-//		
-//	}
+	function makeLink(id, title){
+		var link = document.createElement('a'),
+			cls = document.createElement('div');
+		link.href = '#'+id;
+		link.dataset.id = id;
+//		cls.innerHTML = '✕';
+//		cls.onclick = function(){
+//			deleteNote(id)
+//		}
+		link.innerHTML = title;
+//		link.appendChild(cls);
+		return link;
+	}
+	
+	function deleteNote(id){
+		console.log('DELETE #'+id);
+	}
 	
 	return {
 		init: init,
@@ -182,7 +203,6 @@ N.utils = (function(){
 			}
 		}
 	}
-	
 	
 	return {
 		supportHTMLStorage: supportsHtmlStorage,

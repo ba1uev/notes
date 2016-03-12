@@ -3,13 +3,18 @@ N.editor = (function(){
 	
 	var header, body, curr_id = 1;
 	
+	// при ините едитора сразу запихать первичный текст в ЛС
+	// в листе тоже захуярить в лист-итеме первичный тайтл
 	function init(){
 		bindElements();
 		bindEvents();
 		if (N.utils.supportHTMLStorage()) {
 			localStorage.curr_id = curr_id;
 			loadState();
-			localStorage.active = true;
+//			if (!localStorage['active']) {
+//				console.log('надо сохранить')
+//				saveState(1);
+//			}
 		}
 	}
 	
@@ -39,6 +44,7 @@ N.editor = (function(){
 	function saveState(id){
 		localStorage['h_'+id] = header.innerHTML;
 		localStorage['b_'+id] = body.innerHTML;
+		console.log('saved');
 	}
 	
 	function currId(id){

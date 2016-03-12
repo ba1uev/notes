@@ -1,5 +1,6 @@
 body {
   background: #eee;
+  font-family: helvetica;
 }
 
 .list {
@@ -17,9 +18,20 @@ body {
   background: #fff;
   margin-bottom: 10px;
   cursor: pointer;
+  position: relative;
 }
 .list-items a:hover {
   color: orangered;
+}
+.list-items a div {
+  position: absolute;
+  top: 7px;
+  right: -15px;
+  font-size: 14px;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  line-height: 16px;
 }
 .list-create {
   border: 2px solid orangered;

@@ -7,6 +7,10 @@ N.list = (function(){
 		bindElements();
 		bindEvents();
 		loadState();
+		if (!localStorage['active']) {
+			localStorage.all_notes = '1';
+			localStorage.active = true;
+		}
 	}
 	
 	function bindElements(){
@@ -19,10 +23,7 @@ N.list = (function(){
 		newNoteButton.onclick = function(){
 			var link = document.createElement('a'),
 				id = Math.max.apply(null, localStorage.all_notes.split(',')) + 1;
-			link.dataset.id = id;
-			link.href = '#'+id;
-			link.innerHTML = 'Новый пост';
-			listItems.appendChild(link);
+			listItems.appendChild(makeLink(id, 'New note'));
 			localStorage.all_notes += ',' + id;
 		};
 //		for (var i=0; i<listItemsCount; i++) {
@@ -58,9 +59,23 @@ N.list = (function(){
 		}
 	}
 	
-//	function newLink(){
-//		
-//	}
+	function makeLink(id, title){
+		var link = document.createElement('a'),
+			cls = document.createElement('div');
+		link.href = '#'+id;
+		link.dataset.id = id;
+//		cls.innerHTML = '✕';
+//		cls.onclick = function(){
+//			deleteNote(id)
+//		}
+		link.innerHTML = title;
+//		link.appendChild(cls);
+		return link;
+	}
+	
+	function deleteNote(id){
+		console.log('DELETE #'+id);
+	}
 	
 	return {
 		init: init,

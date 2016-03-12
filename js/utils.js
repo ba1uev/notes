@@ -20,7 +20,6 @@ N.utils = (function(){
 		}
 	}
 	
-	
 	return {
 		supportHTMLStorage: supportsHtmlStorage,
 		getNote: getNote
