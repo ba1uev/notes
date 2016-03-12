@@ -1,20 +1,19 @@
 N = window.N || {};
 N.editor = (function(){
 	
-	var header, body, curr_id = 1;
+	var header, body, ls = localStorage;
 	
-	// при ините едитора сразу запихать первичный текст в ЛС
-	// в листе тоже захуярить в лист-итеме первичный тайтл
 	function init(){
 		bindElements();
 		bindEvents();
-		if (N.utils.supportHTMLStorage()) {
-			localStorage.curr_id = curr_id;
-			loadState();
-//			if (!localStorage['active']) {
-//				console.log('надо сохранить')
-//				saveState(1);
-//			}
+//		console.log(N.getFirstVisit());
+//		console.log(typeof N.getFirstVisit());
+		if (N.getFirstVisit()) {
+			console.log('FIRST');
+			saveState(N.getCurrId());
+		} else {
+			console.log('SECOND');
+			loadState(N.getCurrId());
 		}
 	}
 	
@@ -24,44 +23,39 @@ N.editor = (function(){
 	}
 	
 	function bindEvents(){
-		if (N.utils.supportHTMLStorage()) {
-			document.onkeyup = function() {
-				saveState(curr_id);
-				N.list.loadState();
-			}
+		document.onkeyup = function() {
+			saveState(N.getCurrId());
+			// менять тайтл текущей ссылки
 		}
 	}
 	
-	function loadState(){
-		if (localStorage['active']) {
-			curr_id = localStorage.curr_id;
-			header.innerHTML = localStorage['h_' + curr_id];
-			body.innerHTML = localStorage['b_' + curr_id];
-			console.log('note #'+curr_id+' loaded');
-		}
+	function loadState(id){
+		header.innerHTML = ls['h_' + id];
+		body.innerHTML = ls['b_' + id];
+		console.log('note #'+id+' loaded');
 	}
 	
 	function saveState(id){
-		localStorage['h_'+id] = header.innerHTML;
-		localStorage['b_'+id] = body.innerHTML;
-		console.log('saved');
+		ls['h_'+id] = header.innerHTML;
+		ls['b_'+id] = body.innerHTML;
+		console.log('#'+id+' saved');
 	}
 	
-	function currId(id){
-		if (id) {
-			localStorage.curr_id = curr_id = id;
-			return curr_id;
-		} else {
-			return curr_id;
-		}
-	}
+//	function currId(id){
+//		if (id) {
+//			localStorage.curr_id = curr_id = id;
+//			return curr_id;
+//		} else {
+//			return curr_id;
+//		}
+//	}
 	
 	// =============================================
 	
 	return {
 		init: init,
-		currId: currId,
-		loadState: loadState
+//		currId: currId,
+//		loadState: loadState
 	}
 	
 })();
@@ -149,6 +143,45 @@ N.list = (function(){
 		loadState: loadState
 	}
 	
+})();
+N = window.N || {};
+N = (function(){
+	
+	var ls = localStorage;
+	
+	function init(){
+		if ('firstVisit' in ls) {
+			ls.firstVisit = false;
+		} else {
+			ls.firstVisit = true;
+			ls.curr_id = 1;
+			ls.all_notes = '1';
+		}
+	}
+	
+	function getFirstVisit(){
+		return (ls.firstVisit === 'true');
+	}
+	
+	function getCurrId(){
+		// преобразование к числу
+		// поскольку LS возвращает всегда строку
+		return +ls.curr_id;
+	}
+	
+	function setCurrId(id) {
+		return ls.curr_id = +id;
+	}
+	
+	
+	// addPost, deletePost, getPost(id, head_only)
+	
+	return {
+		init: init,
+		getFirstVisit: getFirstVisit,
+		getCurrId: getCurrId,
+		setCurrId: setCurrId
+	}
 })();
 N = window.N || {};
 N.router = (function(){
