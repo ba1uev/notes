@@ -17,8 +17,10 @@ N.router = (function(){
 			localStorage.all_notes.split(',').indexOf(hash) !== -1) {
 			N.editor.currId(hash);
 			N.editor.init();
+			console.log('loadNote');
 		} else {
 			window.location.hash = '';
+			console.log('loadNote NOT');
 		}
 	}
 	
