@@ -6,13 +6,9 @@ N.editor = (function(){
 	function init(){
 		bindElements();
 		bindEvents();
-//		console.log(N.getFirstVisit());
-//		console.log(typeof N.getFirstVisit());
 		if (N.getFirstVisit()) {
-			console.log('FIRST');
 			saveState(N.getCurrId());
 		} else {
-			console.log('SECOND');
 			loadState(N.getCurrId());
 		}
 	}
@@ -23,39 +19,30 @@ N.editor = (function(){
 	}
 	
 	function bindEvents(){
-		document.onkeyup = function() {
+		header.onkeyup = function(){
 			saveState(N.getCurrId());
-			// менять тайтл текущей ссылки
+			N.list.loadState();
+		}
+		body.onkeyup = function() {
+			saveState(N.getCurrId());
 		}
 	}
 	
 	function loadState(id){
 		header.innerHTML = ls['h_' + id];
 		body.innerHTML = ls['b_' + id];
-		console.log('note #'+id+' loaded');
+//		console.log('note #'+id+' loaded');
 	}
 	
 	function saveState(id){
 		ls['h_'+id] = header.innerHTML;
 		ls['b_'+id] = body.innerHTML;
-		console.log('#'+id+' saved');
+//		console.log('#'+id+' saved');
 	}
-	
-//	function currId(id){
-//		if (id) {
-//			localStorage.curr_id = curr_id = id;
-//			return curr_id;
-//		} else {
-//			return curr_id;
-//		}
-//	}
-	
-	// =============================================
 	
 	return {
 		init: init,
-//		currId: currId,
-//		loadState: loadState
+		loadState: loadState
 	}
 	
 })();

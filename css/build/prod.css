@@ -52,7 +52,7 @@ body {
 .note {
   display: inline-block;
   vertical-align: top;
-  max-width: 500px;
+  width: 500px;
 }
 .note-header, .note-body {
   padding: 10px;

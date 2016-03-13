@@ -9,19 +9,10 @@ N.utils = (function(){
 		}
 	}
 	
-	function getNote(id, head_only){
-		if (head_only) {
-			return localStorage['h_'+id];
-		} else {
-			return {
-				head: localStorage['h_'+id],
-				body: localStorage['b_'+id]
-			}
-		}
-	}
+	
 	
 	return {
 		supportHTMLStorage: supportsHtmlStorage,
-		getNote: getNote
+		
 	}
 })();

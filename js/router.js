@@ -1,10 +1,13 @@
 N = window.N || {};
 N.router = (function(){
-	var hash;
+	var hash,
+		ls = localStorage;
+	
+	
 	function init(){
 		if ('onhashchange' in window) {
 			window.onhashchange = function () {
-				loadNote()
+				loadNote();
 			}
 		}
 		loadNote();
@@ -15,12 +18,10 @@ N.router = (function(){
 		if (hash &&
 			localStorage.all_notes &&
 			localStorage.all_notes.split(',').indexOf(hash) !== -1) {
-			N.editor.currId(hash);
-			N.editor.init();
-			console.log('loadNote');
+			N.setCurrId(hash);
+			N.editor.loadState(hash);
 		} else {
 			window.location.hash = '';
-			console.log('loadNote NOT');
 		}
 	}
 	

@@ -18,8 +18,6 @@ N = (function(){
 	}
 	
 	function getCurrId(){
-		// преобразование к числу
-		// поскольку LS возвращает всегда строку
 		return +ls.curr_id;
 	}
 	
@@ -27,6 +25,21 @@ N = (function(){
 		return ls.curr_id = +id;
 	}
 	
+	function getNote(id, head_only){
+		if (head_only) {
+			return ls['h_'+id];
+		} else {
+			return {
+				head: ls['h_'+id],
+				body: ls['b_'+id]
+			}
+		}
+	}
+	
+	function addNote(id){
+		ls['h_'+id] = 'New note';
+		ls['b_'+id] = '';
+	}
 	
 	// addPost, deletePost, getPost(id, head_only)
 	
@@ -34,6 +47,8 @@ N = (function(){
 		init: init,
 		getFirstVisit: getFirstVisit,
 		getCurrId: getCurrId,
-		setCurrId: setCurrId
+		setCurrId: setCurrId,
+		getNote: getNote,
+		addNote: addNote
 	}
 })();

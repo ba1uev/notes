@@ -1,16 +1,13 @@
 N = window.N || {};
 N.list = (function(){
 	
-	var list, listItems, newNoteButton;
+	var list, listItems, newNoteButton,
+		ls = localStorage;
 	
 	function init(){
 		bindElements();
 		bindEvents();
 		loadState();
-		if (!localStorage['active']) {
-			localStorage.all_notes = '1';
-			localStorage.active = true;
-		}
 	}
 	
 	function bindElements(){
@@ -21,41 +18,23 @@ N.list = (function(){
 	
 	function bindEvents(){
 		newNoteButton.onclick = function(){
-			var link = document.createElement('a'),
-				id = Math.max.apply(null, localStorage.all_notes.split(',')) + 1;
+			var id = Math.max.apply(null, ls.all_notes.split(',')) + 1;
 			listItems.appendChild(makeLink(id, 'New note'));
-			localStorage.all_notes += ',' + id;
+			ls.all_notes += ',' + id;
+			N.addNote(id);
+			N.setCurrId(id);
+			N.editor.loadState(id);
 		};
-//		for (var i=0; i<listItemsCount; i++) {
-//			listItems[i].onclick = function(){
-//				console.log(this.dataset.id);
-//			}
-//		}
-//		listItems.onclick = function(e){
-//			N.editor.currId(e.target.dataset.id)
-//		};
 	}
 	
 	function loadState(){
-		if (N.utils.supportHTMLStorage()) {
-			if (localStorage.all_notes){
-				var notes = localStorage['all_notes'].split(','),
-					notes_count = notes.length,
-					link;
-				while (listItems.firstChild) {
-					listItems.removeChild(listItems.firstChild);
-				}
-				for (var i=0; i<notes_count; i++) {
-//					console.log(notes[i]);
-					link = document.createElement('a');
-					link.dataset.id = notes[i];
-					link.href = '#' + notes[i];
-					link.innerHTML = N.utils.getNote(notes[i], true);
-					listItems.appendChild(link);
-				}
-			} else {
-				localStorage.all_notes = '1'
-			}
+		var notes = ls.all_notes.split(','),
+			notes_count = notes.length;
+		while (listItems.firstChild) {
+			listItems.removeChild(listItems.firstChild);
+		}
+		for (var i=0; i<notes_count; i++) {
+			listItems.appendChild(makeLink(notes[i], N.getNote(notes[i],true)));
 		}
 	}
 	

@@ -6,13 +6,9 @@ N.editor = (function(){
 	function init(){
 		bindElements();
 		bindEvents();
-//		console.log(N.getFirstVisit());
-//		console.log(typeof N.getFirstVisit());
 		if (N.getFirstVisit()) {
-			console.log('FIRST');
 			saveState(N.getCurrId());
 		} else {
-			console.log('SECOND');
 			loadState(N.getCurrId());
 		}
 	}
@@ -23,55 +19,43 @@ N.editor = (function(){
 	}
 	
 	function bindEvents(){
-		document.onkeyup = function() {
+		header.onkeyup = function(){
 			saveState(N.getCurrId());
-			// менять тайтл текущей ссылки
+			N.list.loadState();
+		}
+		body.onkeyup = function() {
+			saveState(N.getCurrId());
 		}
 	}
 	
 	function loadState(id){
 		header.innerHTML = ls['h_' + id];
 		body.innerHTML = ls['b_' + id];
-		console.log('note #'+id+' loaded');
+//		console.log('note #'+id+' loaded');
 	}
 	
 	function saveState(id){
 		ls['h_'+id] = header.innerHTML;
 		ls['b_'+id] = body.innerHTML;
-		console.log('#'+id+' saved');
+//		console.log('#'+id+' saved');
 	}
-	
-//	function currId(id){
-//		if (id) {
-//			localStorage.curr_id = curr_id = id;
-//			return curr_id;
-//		} else {
-//			return curr_id;
-//		}
-//	}
-	
-	// =============================================
 	
 	return {
 		init: init,
-//		currId: currId,
-//		loadState: loadState
+		loadState: loadState
 	}
 	
 })();
 N = window.N || {};
 N.list = (function(){
 	
-	var list, listItems, newNoteButton;
+	var list, listItems, newNoteButton,
+		ls = localStorage;
 	
 	function init(){
 		bindElements();
 		bindEvents();
 		loadState();
-		if (!localStorage['active']) {
-			localStorage.all_notes = '1';
-			localStorage.active = true;
-		}
 	}
 	
 	function bindElements(){
@@ -82,41 +66,23 @@ N.list = (function(){
 	
 	function bindEvents(){
 		newNoteButton.onclick = function(){
-			var link = document.createElement('a'),
-				id = Math.max.apply(null, localStorage.all_notes.split(',')) + 1;
+			var id = Math.max.apply(null, ls.all_notes.split(',')) + 1;
 			listItems.appendChild(makeLink(id, 'New note'));
-			localStorage.all_notes += ',' + id;
+			ls.all_notes += ',' + id;
+			N.addNote(id);
+			N.setCurrId(id);
+			N.editor.loadState(id);
 		};
-//		for (var i=0; i<listItemsCount; i++) {
-//			listItems[i].onclick = function(){
-//				console.log(this.dataset.id);
-//			}
-//		}
-//		listItems.onclick = function(e){
-//			N.editor.currId(e.target.dataset.id)
-//		};
 	}
 	
 	function loadState(){
-		if (N.utils.supportHTMLStorage()) {
-			if (localStorage.all_notes){
-				var notes = localStorage['all_notes'].split(','),
-					notes_count = notes.length,
-					link;
-				while (listItems.firstChild) {
-					listItems.removeChild(listItems.firstChild);
-				}
-				for (var i=0; i<notes_count; i++) {
-//					console.log(notes[i]);
-					link = document.createElement('a');
-					link.dataset.id = notes[i];
-					link.href = '#' + notes[i];
-					link.innerHTML = N.utils.getNote(notes[i], true);
-					listItems.appendChild(link);
-				}
-			} else {
-				localStorage.all_notes = '1'
-			}
+		var notes = ls.all_notes.split(','),
+			notes_count = notes.length;
+		while (listItems.firstChild) {
+			listItems.removeChild(listItems.firstChild);
+		}
+		for (var i=0; i<notes_count; i++) {
+			listItems.appendChild(makeLink(notes[i], N.getNote(notes[i],true)));
 		}
 	}
 	
@@ -164,8 +130,6 @@ N = (function(){
 	}
 	
 	function getCurrId(){
-		// преобразование к числу
-		// поскольку LS возвращает всегда строку
 		return +ls.curr_id;
 	}
 	
@@ -173,6 +137,21 @@ N = (function(){
 		return ls.curr_id = +id;
 	}
 	
+	function getNote(id, head_only){
+		if (head_only) {
+			return ls['h_'+id];
+		} else {
+			return {
+				head: ls['h_'+id],
+				body: ls['b_'+id]
+			}
+		}
+	}
+	
+	function addNote(id){
+		ls['h_'+id] = 'New note';
+		ls['b_'+id] = '';
+	}
 	
 	// addPost, deletePost, getPost(id, head_only)
 	
@@ -180,16 +159,21 @@ N = (function(){
 		init: init,
 		getFirstVisit: getFirstVisit,
 		getCurrId: getCurrId,
-		setCurrId: setCurrId
+		setCurrId: setCurrId,
+		getNote: getNote,
+		addNote: addNote
 	}
 })();
 N = window.N || {};
 N.router = (function(){
-	var hash;
+	var hash,
+		ls = localStorage;
+	
+	
 	function init(){
 		if ('onhashchange' in window) {
 			window.onhashchange = function () {
-				loadNote()
+				loadNote();
 			}
 		}
 		loadNote();
@@ -200,12 +184,10 @@ N.router = (function(){
 		if (hash &&
 			localStorage.all_notes &&
 			localStorage.all_notes.split(',').indexOf(hash) !== -1) {
-			N.editor.currId(hash);
-			N.editor.init();
-			console.log('loadNote');
+			N.setCurrId(hash);
+			N.editor.loadState(hash);
 		} else {
 			window.location.hash = '';
-			console.log('loadNote NOT');
 		}
 	}
 	
@@ -228,19 +210,10 @@ N.utils = (function(){
 		}
 	}
 	
-	function getNote(id, head_only){
-		if (head_only) {
-			return localStorage['h_'+id];
-		} else {
-			return {
-				head: localStorage['h_'+id],
-				body: localStorage['b_'+id]
-			}
-		}
-	}
+	
 	
 	return {
 		supportHTMLStorage: supportsHtmlStorage,
-		getNote: getNote
+		
 	}
 })();
