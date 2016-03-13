@@ -23,6 +23,12 @@ N.editor = (function(){
 			saveState(N.getCurrId());
 			N.list.loadState();
 		}
+		header.onkeydown = function(e){
+			if (e.keyCode === 13) {
+				e.preventDefault();
+				body.focus();
+			}
+		}
 		body.onkeyup = function() {
 			saveState(N.getCurrId());
 		}
@@ -50,6 +56,7 @@ N = window.N || {};
 N.list = (function(){
 	
 	var list, listItems, newNoteButton,
+		deleteButton,
 		ls = localStorage;
 	
 	function init(){
@@ -62,6 +69,7 @@ N.list = (function(){
 		list = document.querySelector('.list');
 		listItems = list.querySelector('.list-items');
 		newNoteButton = list.querySelector('.list-create');
+		deleteButton = document.querySelector('.delete');
 	}
 	
 	function bindEvents(){
@@ -73,6 +81,12 @@ N.list = (function(){
 			N.setCurrId(id);
 			N.editor.loadState(id);
 		};
+		deleteButton.onclick = function(){
+			// if empty note -> no confirm
+			if (confirm('Are you sure to delete note?')) {
+				N.deleteNote(N.getCurrId());
+			}
+		}
 	}
 	
 	function loadState(){
@@ -153,7 +167,19 @@ N = (function(){
 		ls['b_'+id] = '';
 	}
 	
-	// addPost, deletePost, getPost(id, head_only)
+	function deleteNote(id){
+		var n, arr, link;
+		delete ls['h_'+id];
+		delete ls['b_'+id];
+		arr = ls.all_notes.split(','); 
+		n = arr.indexOf(id+'');
+		arr.splice(n,1);
+		ls.all_notes = arr.join(',');
+		link = document.querySelectorAll('[data-id="'+id+'"]')[0];
+		link.parentNode.removeChild(link);
+		N.editor.loadState(1);
+	}
+	
 	
 	return {
 		init: init,
@@ -161,7 +187,8 @@ N = (function(){
 		getCurrId: getCurrId,
 		setCurrId: setCurrId,
 		getNote: getNote,
-		addNote: addNote
+		addNote: addNote,
+		deleteNote: deleteNote
 	}
 })();
 N = window.N || {};
@@ -188,6 +215,7 @@ N.router = (function(){
 			N.editor.loadState(hash);
 		} else {
 			window.location.hash = '';
+			N.setCurrId(1);
 		}
 	}
 	

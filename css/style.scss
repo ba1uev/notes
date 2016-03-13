@@ -1,7 +1,7 @@
 $act: orangered;
 
 body {
-	background: #eee;
+//	background: #eee;
 	font-family: helvetica;
 }
 
@@ -14,9 +14,9 @@ body {
 		a {
 			display: block;
 			text-decoration: none;
-			color: #000;
+			color: #5f5f5f;
 			padding: 4px;
-			font-size: 20px;
+			font-size: 12px;
 			background: #fff;
 			margin-bottom: 10px;
 			cursor: pointer;
@@ -66,11 +66,12 @@ body {
 		}
 	}
 	&-header {
-		font-size: 30px;
+		font-size: 34px;
 		font-weight: 800;
 		margin: 20px 0;
 	}
 	&-body {
-		font-size: 20px;
+		font-size: 18px;
+		color: #272727;
 	}
 }

@@ -22,6 +22,7 @@ N.router = (function(){
 			N.editor.loadState(hash);
 		} else {
 			window.location.hash = '';
+			N.setCurrId(1);
 		}
 	}
 	

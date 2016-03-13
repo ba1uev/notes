@@ -23,6 +23,12 @@ N.editor = (function(){
 			saveState(N.getCurrId());
 			N.list.loadState();
 		}
+		header.onkeydown = function(e){
+			if (e.keyCode === 13) {
+				e.preventDefault();
+				body.focus();
+			}
+		}
 		body.onkeyup = function() {
 			saveState(N.getCurrId());
 		}

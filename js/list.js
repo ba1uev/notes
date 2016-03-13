@@ -2,6 +2,7 @@ N = window.N || {};
 N.list = (function(){
 	
 	var list, listItems, newNoteButton,
+		deleteButton,
 		ls = localStorage;
 	
 	function init(){
@@ -14,6 +15,7 @@ N.list = (function(){
 		list = document.querySelector('.list');
 		listItems = list.querySelector('.list-items');
 		newNoteButton = list.querySelector('.list-create');
+		deleteButton = document.querySelector('.delete');
 	}
 	
 	function bindEvents(){
@@ -25,6 +27,12 @@ N.list = (function(){
 			N.setCurrId(id);
 			N.editor.loadState(id);
 		};
+		deleteButton.onclick = function(){
+			// if empty note -> no confirm
+			if (confirm('Are you sure to delete note?')) {
+				N.deleteNote(N.getCurrId());
+			}
+		}
 	}
 	
 	function loadState(){
