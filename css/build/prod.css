@@ -3,15 +3,16 @@ body {
 }
 
 .list {
-  display: inline-block;
+  position: absolute;
+  right: 40px;
+  top: 108px;
   width: 200px;
   vertical-align: top;
-  margin: 20px 20px 0 20px;
 }
 .list-items a {
   display: block;
   text-decoration: none;
-  color: #5f5f5f;
+  color: #7e7e7e;
   padding: 4px;
   font-size: 12px;
   background: #fff;
@@ -19,8 +20,8 @@ body {
   cursor: pointer;
   position: relative;
 }
-.list-items a:hover {
-  color: orangered;
+.list-items a.curr {
+  color: #000;
 }
 .list-items a div {
   position: absolute;
@@ -49,8 +50,8 @@ body {
 }
 
 .note {
-  display: inline-block;
-  vertical-align: top;
+  position: relative;
+  margin: 20px auto;
   width: 500px;
 }
 .note-header, .note-body {
@@ -68,6 +69,15 @@ body {
 .note-body {
   font-size: 18px;
   color: #272727;
+  min-height: 400px;
+}
+
+.delete {
+  border: none;
+  background: none;
+  color: orangered;
+  font-weight: 800;
+  float: right;
 }
 
 /*# sourceMappingURL=prod.css.map */

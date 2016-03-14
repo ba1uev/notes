@@ -20,6 +20,7 @@ N.router = (function(){
 			localStorage.all_notes.split(',').indexOf(hash) !== -1) {
 			N.setCurrId(hash);
 			N.editor.loadState(hash);
+			N.list.loadState();
 		} else {
 			window.location.hash = '';
 			N.setCurrId(1);

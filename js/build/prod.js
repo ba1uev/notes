@@ -46,9 +46,14 @@ N.editor = (function(){
 //		console.log('#'+id+' saved');
 	}
 	
+	function initNote(){
+		body.focus();
+	}
+	
 	return {
 		init: init,
-		loadState: loadState
+		loadState: loadState,
+		initNote: initNote
 	}
 	
 })();
@@ -74,12 +79,15 @@ N.list = (function(){
 	
 	function bindEvents(){
 		newNoteButton.onclick = function(){
-			var id = Math.max.apply(null, ls.all_notes.split(',')) + 1;
-			listItems.appendChild(makeLink(id, 'New note'));
+			var id = Math.max.apply(null, ls.all_notes.split(',')) + 1,
+				link = makeLink(id, 'New note');
+			listItems.appendChild(link);
 			ls.all_notes += ',' + id;
 			N.addNote(id);
 			N.setCurrId(id);
 			N.editor.loadState(id);
+			N.editor.initNote();
+			link.click();
 		};
 		deleteButton.onclick = function(){
 			// if empty note -> no confirm
@@ -91,20 +99,29 @@ N.list = (function(){
 	
 	function loadState(){
 		var notes = ls.all_notes.split(','),
-			notes_count = notes.length;
+			notes_count = notes.length,
+			curr_id = N.getCurrId();
 		while (listItems.firstChild) {
 			listItems.removeChild(listItems.firstChild);
 		}
 		for (var i=0; i<notes_count; i++) {
-			listItems.appendChild(makeLink(notes[i], N.getNote(notes[i],true)));
+			if (notes[i] != curr_id) {
+				listItems.appendChild(makeLink(notes[i], N.getNote(notes[i],true)));
+			} else {
+				listItems.appendChild(makeLink(notes[i], N.getNote(notes[i],true), true));
+			}
+			// if header = '' -> ______
 		}
 	}
 	
-	function makeLink(id, title){
+	function makeLink(id, title, curr){
 		var link = document.createElement('a'),
 			cls = document.createElement('div');
 		link.href = '#'+id;
 		link.dataset.id = id;
+		if (curr) {
+			link.className = 'curr';
+		}
 //		cls.innerHTML = '✕';
 //		cls.onclick = function(){
 //			deleteNote(id)
@@ -213,6 +230,7 @@ N.router = (function(){
 			localStorage.all_notes.split(',').indexOf(hash) !== -1) {
 			N.setCurrId(hash);
 			N.editor.loadState(hash);
+			N.list.loadState();
 		} else {
 			window.location.hash = '';
 			N.setCurrId(1);

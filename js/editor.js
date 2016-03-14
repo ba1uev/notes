@@ -46,9 +46,14 @@ N.editor = (function(){
 //		console.log('#'+id+' saved');
 	}
 	
+	function initNote(){
+		body.focus();
+	}
+	
 	return {
 		init: init,
-		loadState: loadState
+		loadState: loadState,
+		initNote: initNote
 	}
 	
 })();

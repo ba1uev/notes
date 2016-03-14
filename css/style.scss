@@ -1,28 +1,36 @@
 $act: orangered;
+$paper: rgb(253,253,245);
 
 body {
-//	background: #eee;
+//	background: $paper;
 	font-family: helvetica;
 }
 
 .list {
-	display: inline-block;
+//	display: inline-block;
+	position: absolute;
+	right: 40px;
+	top: 108px;
 	width: 200px;
 	vertical-align: top;
-	margin: 20px 20px 0 20px;
+//	margin: 108px 20px 0 20px;
 	&-items {
 		a {
 			display: block;
 			text-decoration: none;
-			color: #5f5f5f;
+			color: #7e7e7e;
 			padding: 4px;
 			font-size: 12px;
 			background: #fff;
 			margin-bottom: 10px;
 			cursor: pointer;
 			position: relative;
-			&:hover {
-				color: $act;
+//			&:hover {
+////				color: $act;
+//				color: #000;
+//			}
+			&.curr {
+				color: #000;
 			}
 			div {
 				position: absolute;
@@ -55,8 +63,10 @@ body {
 }
 
 .note {
-	display: inline-block;
-	vertical-align: top;
+//	display: inline-block;
+//	vertical-align: top;
+	position: relative;
+	margin: 20px auto;
 	width: 500px;
 	&-header, &-body {
 		padding: 10px;
@@ -73,5 +83,14 @@ body {
 	&-body {
 		font-size: 18px;
 		color: #272727;
+		min-height: 400px;
 	}
+}
+
+.delete {
+	border: none;
+	background: none;
+	color: $act;
+	font-weight: 800;
+	float: right;
 }
