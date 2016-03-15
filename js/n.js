@@ -42,16 +42,19 @@ N = (function(){
 	}
 	
 	function deleteNote(id){
-		var n, arr, link;
+		var n, arr, link, next;
 		delete ls['h_'+id];
 		delete ls['b_'+id];
 		arr = ls.all_notes.split(','); 
 		n = arr.indexOf(id+'');
 		arr.splice(n,1);
 		ls.all_notes = arr.join(',');
+		next = Math.max.apply(null,arr);
+		setCurrId(next);
 		link = document.querySelectorAll('[data-id="'+id+'"]')[0];
 		link.parentNode.removeChild(link);
-		N.editor.loadState(1);
+		N.editor.loadState(next);
+		N.list.loadState();
 	}
 	
 	
