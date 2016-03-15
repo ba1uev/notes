@@ -63,12 +63,7 @@ N.list = (function(){
 		if (curr) {
 			link.className = 'curr';
 		}
-//		cls.innerHTML = '✕';
-//		cls.onclick = function(){
-//			deleteNote(id)
-//		}
 		link.innerHTML = title;
-//		link.appendChild(cls);
 		return link;
 	}
 	
